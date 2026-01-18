@@ -1,4 +1,4 @@
-package com.example.scannerml
+package com.ml.edge_sample
 
 import org.junit.Test
 

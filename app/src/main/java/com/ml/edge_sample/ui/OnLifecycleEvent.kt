@@ -1,4 +1,4 @@
-package com.example.scannerml.ui
+package com.ml.edge_sample.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect

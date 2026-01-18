@@ -4,13 +4,13 @@ plugins {
 }
 
 android {
-    namespace = "com.example.scannerml"
-    compileSdk = 34
+    namespace = "com.ml.edge_sample"
+    compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.scannerml"
+        applicationId = "com.ml.edge_sample"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -67,7 +67,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation("com.github.zynkware:Tiny-OpenCV:4.4.0-4")
+    // implementation("com.github.zynkware:Tiny-OpenCV:4.4.0-4")
+    implementation("com.quickbirdstudios:opencv:4.5.3.0")
 
     // CameraX core library using the camera2 implementation
     val camerax_version = "1.3.3"
@@ -79,4 +80,5 @@ dependencies {
     implementation("com.google.accompanist:accompanist-permissions:0.31.0-alpha")
 
     implementation("io.coil-kt:coil-compose:2.7.0")
+    implementation("androidx.exifinterface:exifinterface:1.3.7")
 }

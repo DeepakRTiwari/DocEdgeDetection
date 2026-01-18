@@ -1,4 +1,4 @@
-package com.example.scannerml.ui.theme
+package com.ml.edge_sample.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
