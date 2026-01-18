@@ -5,8 +5,15 @@ import org.opencv.android.Utils
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
 import com.ml.edge_sample.scanner.utils.HoughLineDetector
+import com.ml.edge_sample.scanner.DocumentScannerConfig
 
-class ImageProcessor {
+class ImageProcessor(
+    private var config: DocumentScannerConfig = DocumentScannerConfig()
+) {
+    
+    fun updateConfig(newConfig: DocumentScannerConfig) {
+        this.config = newConfig
+    }
 
 
 
@@ -33,13 +40,23 @@ class ImageProcessor {
             // Apply Gaussian blur
             Imgproc.GaussianBlur(blurred, blurred, Size(5.0, 5.0), 0.0)
 
-            // Apply Canny edge detection with LOWER thresholds for better low-contrast detection
+            // Apply Canny edge detection
             Imgproc.Canny(blurred, edges, 30.0, 100.0)
 
             // Dilate to connect fragmented edges
             val kernel = Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, Size(5.0, 5.0))
             Imgproc.dilate(edges, edges, kernel)
 
+            // Mode 1: Hough-only detection
+            if (config.detectionMode == 1) {
+                val houghPoints = HoughLineDetector.detectDocument(edges, inputMat.cols(), inputMat.rows())
+                if (houghPoints != null && isValidDocumentShape(houghPoints, inputMat.cols(), inputMat.rows())) {
+                    return houghPoints
+                }
+                return null
+            }
+
+            // Mode 0 or 2: Canny-based detection (with or without fallbacks)
             // Find contours
             val contours = mutableListOf<MatOfPoint>()
             val hierarchy = Mat()
@@ -81,8 +98,13 @@ class ImageProcessor {
                 }
             }
 
+            // Mode 0: Canny-only, stop here if no contour found
+            if (config.detectionMode == 0) {
+                return null
+            }
+
+            // Mode 2: Hybrid - continue with fallbacks
             // Fallback: Use minAreaRect if no perfect 4-point contour found
-            // This helps with low-contrast or irregular shapes
             if (contours.isNotEmpty()) {
                 val largestContour = contours[0]
                 val area = Imgproc.contourArea(largestContour)
@@ -96,14 +118,14 @@ class ImageProcessor {
                     
                     val boxPoints = mutableListOf<Point>()
                     for (i in 0 until 4) {
-                        val x = vertices.get(i, 0)[0]  // x coordinate from column 0
-                        val y = vertices.get(i, 1)[0]  // y coordinate from column 1
+                        val x = vertices.get(i, 0)[0]
+                        val y = vertices.get(i, 1)[0]
                         boxPoints.add(Point(x, y))
                     }
                     
                     vertices.release()
                     
-                    // Validate minAreaRect result too
+                    // Validate minAreaRect result
                     if (isValidDocumentShape(boxPoints, inputMat.cols(), inputMat.rows())) {
                         return boxPoints
                     }
@@ -228,11 +250,16 @@ class ImageProcessor {
                 Imgproc.INTER_LINEAR
             )
 
+            // Flip horizontally to correct left-to-right mirror
+            val flipped = Mat()
+            Core.flip(warped, flipped, 1)  // 1 = horizontal flip
+
             // Convert to bitmap
-            val bitmap = Bitmap.createBitmap(warped.cols(), warped.rows(), Bitmap.Config.ARGB_8888)
-            Utils.matToBitmap(warped, bitmap)
+            val bitmap = Bitmap.createBitmap(flipped.cols(), flipped.rows(), Bitmap.Config.ARGB_8888)
+            Utils.matToBitmap(flipped, bitmap)
 
             warped.release()
+            flipped.release()
             srcMat.release()
             dstMat.release()
             transform.release()

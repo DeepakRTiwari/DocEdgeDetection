@@ -25,11 +25,12 @@ import org.opencv.core.Point
 class DocumentScanner(
     private var config: DocumentScannerConfig = DocumentScannerConfig()
 ) {
-    private val imageProcessor = ImageProcessor()
+    private val imageProcessor = ImageProcessor(config)
     private var smoothedPolygon: List<Point>? = null
     
     fun updateConfig(newConfig: DocumentScannerConfig) {
         this.config = newConfig
+        imageProcessor.updateConfig(newConfig)
     }
     
     /**

@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.toArgb
  * @property autoCapture Enable/disable automatic capture when document is stable
  * @property strokeColor Color for polygon stroke outline
  * @property fillAlpha Alpha value for polygon fill (applied to stroke color)
+ * @property detectionMode Detection algorithm mode: 0 = Canny only, 1 = Hough only, 2 = Hybrid (Canny + minAreaRect + Hough fallback)
  */
 data class DocumentScannerConfig(
     val minContourArea: Double = 3000.0,
@@ -25,7 +26,8 @@ data class DocumentScannerConfig(
     val minPolygonDistance: Float = 50f,
     val autoCapture: Boolean = true,
     val strokeColor: Int = Color.Blue.toArgb(),
-    val fillAlpha: Float = 0.3f
+    val fillAlpha: Float = 0.3f,
+    val detectionMode: Int = 2  // 0 = Canny only, 1 = Hough only, 2 = Hybrid (default)
 ) {
     /**
      * Fill color auto-generated from stroke color with reduced alpha

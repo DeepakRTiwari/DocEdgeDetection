@@ -135,22 +135,9 @@ class DocumentScannerAnalyzer(
             cooldownExpired && 
             smoothedHasSettled) {
             
-            // Check if this is a different document than last captured
+            // Capture the document
             val polygonCenter = GeometryUtils.calculatePolygonCenter(points)
-            val isDifferentDocument = lastCapturedCenter?.let { lastCenter ->
-                val distance = kotlin.math.sqrt(
-                    (polygonCenter.x - lastCenter.x).pow(2) +
-                    (polygonCenter.y - lastCenter.y).pow(2)
-                )
-                distance > config.minPolygonDistance
-            } ?: true
-            
-            if (isDifferentDocument) {
-                captureDocument(frame, points, polygonCenter)
-            } else {
-                // Same document, reset stable count
-                stableFrameCount = 0
-            }
+            captureDocument(frame, points, polygonCenter)
         }
     }
     

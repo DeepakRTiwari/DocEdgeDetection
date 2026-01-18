@@ -78,7 +78,8 @@ fun ScannerScreen(
             autoCapture = autoCaptureEnabled,
             strokeColor = android.graphics.Color.BLUE,
             fillAlpha = 0.2f,
-            smoothingAlpha = 0.1f
+            detectionMode = 1,
+            smoothingAlpha = 0.12f
         )
     }
 
