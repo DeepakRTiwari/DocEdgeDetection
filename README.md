@@ -4,7 +4,7 @@ A clean, modular, camera-agnostic document scanning library for Android.
 
 ## Demo
 
-<img src="https://github.com/user-attachments/assets/b0c2b910-a083-4fac-a5c7-ae6f9ea8e020" alt="Scanner Demo" width="80%" height="80%" />
+<img src="https://github.com/user-attachments/assets/b0c2b910-a083-4fac-a5c7-ae6f9ea8e020" alt="Scanner Demo" width="20%" height="20%" />
 
 ## Features
 
