@@ -20,6 +20,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ScannerML"
+rootProject.name = "DocEdgeDetection"
 include(":app")
- 
+include(":DocEdgeDetection")
