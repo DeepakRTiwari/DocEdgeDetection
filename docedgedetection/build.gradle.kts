@@ -5,8 +5,8 @@ plugins {
 }
 
 android {
-    namespace = "com.ml.doc"
-    group = "com.ml.doc"
+    namespace = "com.ml.android"
+    group = "com.ml.android"
     version = "1.0.0"
 
     compileSdk {
@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.compose.foundation.layout)
+    implementation(libs.androidx.compose.material.icons.extended)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
